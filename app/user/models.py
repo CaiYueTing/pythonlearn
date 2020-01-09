@@ -22,6 +22,19 @@ class UserModel(db.Model):
         db.session.commit()
 
     @classmethod
+    def updateUserById(cls, id, info):
+        usr = cls.query.filter(UserModel.id == id).first()
+        if usr is None:
+            return None
+        print(info['name'], info['email'], info['role_id'])
+        usr.name = info['name'] if info['name'] is not None else usr.name
+        usr.email = info['email'] if info['email'] is not None else usr.email
+        usr.role_id = info['role_id'] if info['role_id'] is not None else usr.role_id
+        print(usr.name, usr.email, usr.role_id)
+        db.session.commit()
+        return "success"
+
+    @classmethod
     def deleteUserById(cls, id):
         usr = cls.query.filter(UserModel.id == id).first()
         if usr is None:

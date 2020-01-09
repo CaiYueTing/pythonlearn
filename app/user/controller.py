@@ -24,12 +24,24 @@ def user(user_id):
     return jsonify({"data": {"id": user.id, "name": user.name, "email": user.email, "role": user.rolename.role}}), 200
 
 
+@USER.route('/update/<user_id>', methods=["POST"])
+def userUpdate(user_id):
+    name = request.form.get('name')
+    email = request.form.get('email')
+    role_id = request.form.get('role')
+    info = {"name": name, "email": email, "role_id": role_id}
+    uuser = UserModel.updateUserById(user_id, info)
+    if uuser is None:
+        return jsonify({"error": {"message": "wrong user id"}})
+    return jsonify({"data": {"status": "success", "action": "update", "scope": "user :" + user_id}}), 200
+
+
 @USER.route('/delete/<user_id>', methods=["DELETE"])
 def userDelete(user_id):
     duser = UserModel.deleteUserById(user_id)
     if duser is None:
         return jsonify({"error": {"message": "wrong user id"}})
-    return jsonify({"data": {"status": "success", "action": "delete", "scope": "user"+user_id}}), 204
+    return jsonify({"data": {"status": "success", "action": "delete", "scope": "user :" + user_id}}), 200
 
 
 @USER.route('', methods=["GET"])
