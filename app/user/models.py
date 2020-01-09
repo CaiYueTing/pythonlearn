@@ -2,7 +2,7 @@ from app import db
 from app.role.models import Role
 
 
-class UserModel(db.Model):
+class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(20), nullable=False)
@@ -23,7 +23,7 @@ class UserModel(db.Model):
 
     @classmethod
     def updateUserById(cls, id, info):
-        usr = cls.query.filter(UserModel.id == id).first()
+        usr = cls.query.filter(User.id == id).first()
         if usr is None:
             return None
         usr.name = info['name'] if info['name'] is not None else usr.name
@@ -34,7 +34,7 @@ class UserModel(db.Model):
 
     @classmethod
     def deleteUserById(cls, id):
-        usr = cls.query.filter(UserModel.id == id).first()
+        usr = cls.query.filter(User.id == id).first()
         if usr is None:
             return None
         db.session.delete(usr)
@@ -43,13 +43,13 @@ class UserModel(db.Model):
 
     @classmethod
     def getUserById(cls, findid):
-        usr = cls.query.join(Role).filter(UserModel.id == findid).filter(UserModel.role_id == Role.id).first()
+        usr = cls.query.join(Role).filter(User.id == findid).filter(User.role_id == Role.id).first()
         # usr = cls.query.get(findid)
         return usr
 
     @classmethod
     def getAllUsers(cls):
-        users = cls.query.join(Role).filter(UserModel.role_id == Role.id).all()
+        users = cls.query.join(Role).filter(User.role_id == Role.id).all()
         return users
         
 
