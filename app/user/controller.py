@@ -24,7 +24,7 @@ def user(user_id):
     return jsonify({"user": {"id": user.id, "name": user.name, "email": user.email, "role": user.rolename.role}}), 200
 
 
-@USER.route('/update/<user_id>', methods=["POST"])
+@USER.route('/update/<user_id>', methods=["PATCH"])
 def userUpdate(user_id):
     name = request.form.get('name')
     email = request.form.get('email')
