@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, jsonify, Blueprint
-from app.user.models import UserModel, Role
+from app.user.models import UserModel
+from app.role.models import Role
+from app.post.models import Post
 import json
 
 USER = Blueprint('user', __name__, url_prefix='/api/v1/users')
@@ -23,6 +25,24 @@ def user(user_id):
         return jsonify({"error": {"message": "wrong user id"}})
     return jsonify({"user": {"id": user.id, "name": user.name, "email": user.email, "role": user.rolename.role}}), 200
 
+
+@USER.route('/<user_id>/posts', methods=["GET"])
+def getPostsByUser(user_id):
+    posts = Post.getPostsByUser(user_id)
+    if posts is None:
+        return jsonify({"error": {"message": "wrong user id"}})
+
+    data = {"data": []}
+    for post in posts:
+        pst = {
+            "post_id": post.id,
+            "title": post.title,
+            "content": post.content,
+            "poster": post.poster.name
+        }
+        data["data"].append(pst)
+
+    return jsonify(data), 200
 
 @USER.route('/update/<user_id>', methods=["PATCH"])
 def userUpdate(user_id):

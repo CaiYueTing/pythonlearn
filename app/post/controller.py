@@ -13,6 +13,13 @@ def create():
     pst.createPost()
     return jsonify({"data": {"status": "success", "action": "create", "scope": "post"}}), 201
 
+@POST.route('/<post_id>', methods=['GET'])
+def getPostById(post_id):
+    post = Post.getPostById(post_id)
+    if post is None:
+        return jsonify({"error": {"message": "wrong post id"}})
+    return jsonify({"post": {"id": post.id, "title": post.title, "content": post.content, "poster": post.poster.name}})
+
 @POST.route('/list', methods=["GET"])
 def postsList():
     posts = Post.getAllPosts()
