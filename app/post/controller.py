@@ -35,3 +35,20 @@ def postsList():
         }
         data['data'].append(pst)
     return data
+
+@POST.route('/update/<post_id>', methods=["PATCH"])
+def updatePostById(post_id):
+    title = request.form.get('title')
+    content = request.form.get('content')
+    info = {"title": title, "content": content}
+    uppst = Post.updatePostById(post_id, info)
+    if uppst is None:
+        return jsonify({"error": {"message": "wrong post id"}})
+    return jsonify({"data": {"status": "success", "action": "update", "scope": "post"}}), 200
+
+@POST.route('/delete/<post_id>', methods=["DELETE"])
+def deletePostById(post_id):
+    dpst = Post.deletePostById(post_id)
+    if dpst is None:
+        return jsonify({"error": {"message": "wrong post id"}})
+    return jsonify({"data": {"status": "success", "action": "delete", "scope": "post"}}), 200

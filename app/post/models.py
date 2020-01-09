@@ -49,8 +49,12 @@ class Post(db.Model):
 
     @classmethod
     def deletePostById(cls, id):
-        post = cls.query.filter(Post.id == id).delete()
+        post = cls.query.filter(Post.id == id).first()
+        if post is None:
+            return None
+        db.session.delete(post)
         db.session.commit()
+        return 'success'
 
     def __repr__(self):
         return "<Post %s>" % self.title
