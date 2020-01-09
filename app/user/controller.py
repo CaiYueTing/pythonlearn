@@ -21,7 +21,7 @@ def user(user_id):
     user = UserModel.getUserById(user_id)
     if user is None:
         return jsonify({"error": {"message": "wrong user id"}})
-    return jsonify({"data": {"id": user.id, "name": user.name, "email": user.email, "role": user.rolename.role}}), 200
+    return jsonify({"user": {"id": user.id, "name": user.name, "email": user.email, "role": user.rolename.role}}), 200
 
 
 @USER.route('/update/<user_id>', methods=["POST"])
@@ -50,16 +50,16 @@ def allusers():
     if users is None:
         return jsonify({"error": {"message": "wrong user id"}})
 
-    data = []
+    data = {"data": []}
     for user in users:
         usr = {
-            "data": {
+            "user": {
                 "id": user.id,
                 "name": user.name,
                 "email": user.email,
                 "role": user.rolename.role
             }
         }
-        data.append(usr)
+        data["data"].append(usr)
 
     return jsonify(data), 200
