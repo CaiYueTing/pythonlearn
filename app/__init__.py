@@ -11,8 +11,10 @@ db.init_app(app)
 
 from app.user.controller import USER
 from app.role.controller import ROLE
+from app.post.controller import POST
 
 
 app.register_blueprint(USER)
 app.register_blueprint(ROLE)
+app.register_blueprint(POST)
 
