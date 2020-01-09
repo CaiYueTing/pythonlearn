@@ -13,7 +13,7 @@ def createUser():
     role_id = request.form.get('role')
     usr = UserModel(name, email, role_id)
     usr.create()
-    return "create user success", 201
+    return jsonify({"data": {"status": "success", "action": "create", "scope": "user :" + name}}), 201
 
 
 @USER.route('/<user_id>', methods=["GET"])
