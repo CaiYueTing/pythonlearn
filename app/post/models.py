@@ -1,8 +1,9 @@
 from app import db
 from app.user.models import User
+from app.model.datetime import DataTimeBase
 
 
-class Post(db.Model):
+class Post(DataTimeBase, db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text)
@@ -19,6 +20,7 @@ class Post(db.Model):
     def createPost(self):
         db.session.add(self)
         db.session.commit()
+        return self.id
 
     @classmethod
     def getPostsByUser(cls, userid):

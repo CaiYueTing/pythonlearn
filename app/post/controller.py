@@ -21,7 +21,7 @@ def create():
 def getPostById(post_id):
     post = Post.getPostById(post_id)
     if post is None:
-        return jsonify({"error": {"message": "wrong post id"}})
+        return jsonify({"error": {"message": "wrong post id"}}), 404
     pst = {
         "post": {
                 "id": post.id,
@@ -47,7 +47,7 @@ def postsList():
             }
         }
         data['data'].append(pst)
-    return data
+    return data, 200
 
 
 @POST.route('/<post_id>', methods=["PATCH"])
@@ -57,9 +57,9 @@ def updatePostById(post_id):
     info = {"title": title, "content": content}
     uppst = Post.updatePostById(post_id, info)
     if uppst is None:
-        return jsonify({"error": {"message": "wrong post id"}})
+        return jsonify({"error": {"message": "wrong post id"}}), 404
     message = {
-        "data": {"status": "success", "action": "create", "scope": "post"}
+        "data": {"status": "success", "action": "update", "scope": "post"}
     }
     return jsonify(message), 200
 
@@ -68,8 +68,8 @@ def updatePostById(post_id):
 def deletePostById(post_id):
     dpst = Post.deletePostById(post_id)
     if dpst is None:
-        return jsonify({"error": {"message": "wrong post id"}})
+        return jsonify({"error": {"message": "wrong post id"}}), 404
     message = {
-        "data": {"status": "success", "action": "create", "scope": "post"}
+        "data": {"status": "success", "action": "delete", "scope": "post"}
     }
     return jsonify(message), 200

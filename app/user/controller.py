@@ -12,12 +12,12 @@ def createUser():
     email = request.form.get('email')
     role_id = request.form.get('role')
     usr = User(name, email, role_id)
-    usr.create()
+    id = usr.create()
     message = {
         "data": {
             "status": "success",
             "action": "create",
-            "scope": "user :" + name
+            "scope": "user :" + str(id)
         }
     }
     return jsonify(message), 201
@@ -27,7 +27,7 @@ def createUser():
 def user(user_id):
     user = User.getUserById(user_id)
     if user is None:
-        return jsonify({"error": {"message": "wrong user id"}})
+        return jsonify({"error": {"message": "wrong user id"}}), 404
     message = {
         "user": {
             "id": user.id,
@@ -43,7 +43,7 @@ def user(user_id):
 def getPostsByUser(user_id):
     posts = Post.getPostsByUser(user_id)
     if posts is None:
-        return jsonify({"error": {"message": "wrong user id"}})
+        return jsonify({"error": {"message": "wrong user id"}}), 404
 
     data = {"data": []}
     for post in posts:
@@ -66,7 +66,7 @@ def userUpdate(user_id):
     info = {"name": name, "email": email, "role_id": role_id}
     uuser = User.updateUserById(user_id, info)
     if uuser is None:
-        return jsonify({"error": {"message": "wrong user id"}})
+        return jsonify({"error": {"message": "wrong user id"}}), 404
     message = {
         "data": {
             "status": "success",
@@ -81,7 +81,7 @@ def userUpdate(user_id):
 def userDelete(user_id):
     duser = User.deleteUserById(user_id)
     if duser is None:
-        return jsonify({"error": {"message": "wrong user id"}})
+        return jsonify({"error": {"message": "wrong user id"}}), 404
     message = {
         "data": {
             "status": "success",
@@ -96,7 +96,7 @@ def userDelete(user_id):
 def allusers():
     users = User.getAllUsers()
     if users is None:
-        return jsonify({"error": {"message": "wrong user id"}})
+        return jsonify({"error": {"message": "wrong user id"}}), 404
 
     data = {"data": []}
     for user in users:
