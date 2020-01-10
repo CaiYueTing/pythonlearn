@@ -33,7 +33,36 @@ def getPostById(post_id):
     return jsonify(pst), 200
 
 
-@POST.route('/list', methods=["GET"])
+@POST.route("", methods=["GET"])
+def searchByArgs():
+    created_at = request.args.get("created_at", None)
+    updated_at = request.args.get("updated_at", None)
+    title = request.args.get("title", None)
+    content = request.args.get("content", None)
+    args = {
+        "title": title,
+        "content": content,
+        "created_at": created_at,
+        "updated_at": updated_at
+    }
+    posts = Post.getPostsByArgs(args)
+    if posts is None:
+        return jsonify({"error": {"message": "can't not find post"}}), 404
+    data = {"data": []}
+    for post in posts:
+        pst = {
+            "post": {
+                "id": post.id,
+                "title": post.title,
+                "content": post.content,
+                "poster": post.poster.name
+            }
+        }
+        data['data'].append(pst)
+    return data, 200
+
+
+@POST.route("/list", methods=["GET"])
 def postsList():
     posts = Post.getAllPosts()
     data = {"data": []}

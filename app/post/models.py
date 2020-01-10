@@ -37,6 +37,44 @@ class Post(DataTimeBase, db.Model):
         return post
 
     @classmethod
+    def getPostsByArgs(cls, args):
+        created_at = args.get("created_at", None)
+        updated_at = args.get("updated_at", None)
+        title = args.get("title", None)
+        content = args.get("content", None)
+        print(args)
+
+        if created_at is not None:
+            filters = Post.created_at == created_at
+        if updated_at is not None:
+            filters = Post.updated_at == updated_at
+        if title is not None:
+            filters = Post.title == title
+        if content is not None:
+            filters = Post.content == content
+
+        psts = Post.query.filter(filters).all()
+        return psts
+
+    @classmethod
+    def getPostsByUserArg(cls, id, args):
+        created_at = args.get("created_at", None)
+        updated_at = args.get("updated_at", None)
+        title = args.get("title", None)
+        content = args.get("content", None)
+        post = cls.query.filter(Post.poster_id == id)
+        if created_at is not None:
+            post.filter(Post.created_at == created_at)
+        if updated_at is not None:
+            post.filter(Post.updated_at == updated_at)
+        if title is not None:
+            post.filter(Post.title == title)
+        if content is not None:
+            post.filter(Post.content == content)
+        psts = post.all()
+        return psts
+
+    @classmethod
     def getAllPosts(cls):
         posts = cls.query.all()
         return posts

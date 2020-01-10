@@ -41,7 +41,19 @@ def user(user_id):
 
 @USER.route('/<user_id>/posts', methods=["GET"])
 def getPostsByUser(user_id):
-    posts = Post.getPostsByUser(user_id)
+    created_at = request.args.get('created_at', None)
+    updated_at = request.args.get('updated_at', None)
+    title = request.args.get('title', None)
+    content = request.args.get('content', None)
+    args = {
+        "created_at": created_at,
+        "updated_at": updated_at,
+        "title": title,
+        "content": content
+    }
+    posts = Post.getPostsByUserArg(user_id, args)
+
+    # posts = Post.getPostsByUser(user_id)
     if posts is None:
         return jsonify({"error": {"message": "wrong user id"}}), 404
 
