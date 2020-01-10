@@ -1,11 +1,12 @@
 from app import db
 
+
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String(10), nullable=False)
     # aff = db.relationship("UserModel", backref="user", lazy='dynamic')
-    
+
     def __init__(self, role):
         self.role = role
 

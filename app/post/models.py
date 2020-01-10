@@ -1,19 +1,21 @@
 from app import db
 from app.user.models import User
 
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text)
     content = db.Column(db.Text)
-    poster_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    poster_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id', ondelete="CASCADE"), nullable=False)
     poster = db.relationship(User, lazy='joined')
 
     def __init__(self, title='', content='', poster_id=''):
         self.title = title
         self.content = content
         self.poster_id = poster_id
-    
+
     def createPost(self):
         db.session.add(self)
         db.session.commit()

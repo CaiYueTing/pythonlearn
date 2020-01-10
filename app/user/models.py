@@ -15,7 +15,6 @@ class User(db.Model):
         self.name = name
         self.email = email
         self.role_id = role_id
-        
 
     def create(self):
         db.session.add(self)
@@ -26,9 +25,13 @@ class User(db.Model):
         usr = cls.query.filter(User.id == id).first()
         if usr is None:
             return None
-        usr.name = info['name'] if info['name'] is not None else usr.name
-        usr.email = info['email'] if info['email'] is not None else usr.email
-        usr.role_id = info['role_id'] if info['role_id'] is not None else usr.role_id
+        usr.name = usr.name if info['name'] is None else info['name']
+        usr.email = usr.email if info['email'] is None else info['email']
+        if info['role_id'] is None:
+            usr.role_id = usr.role_id
+        else:
+            usr.role_id = info['role_id']
+
         db.session.commit()
         return "success"
 
@@ -43,7 +46,8 @@ class User(db.Model):
 
     @classmethod
     def getUserById(cls, findid):
-        usr = cls.query.join(Role).filter(User.id == findid).filter(User.role_id == Role.id).first()
+        usr = cls.query.join(Role).filter(User.id == findid)\
+                    .filter(User.role_id == Role.id).first()
         # usr = cls.query.get(findid)
         return usr
 
@@ -51,7 +55,6 @@ class User(db.Model):
     def getAllUsers(cls):
         users = cls.query.join(Role).filter(User.role_id == Role.id).all()
         return users
-        
 
     def __repr__(self):
         return "<User %s>" % self.rolename.role

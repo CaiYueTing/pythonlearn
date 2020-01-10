@@ -9,16 +9,29 @@ def create():
     title = request.form.get('title')
     content = request.form.get('content')
     poster_id = request.form.get('poster_id')
-    pst =  Post(title, content, poster_id)
+    pst = Post(title, content, poster_id)
     pst.createPost()
-    return jsonify({"data": {"status": "success", "action": "create", "scope": "post"}}), 201
+    message = {
+        "data": {"status": "success", "action": "create", "scope": "post"}
+    }
+    return jsonify(message), 201
+
 
 @POST.route('/<post_id>', methods=['GET'])
 def getPostById(post_id):
     post = Post.getPostById(post_id)
     if post is None:
         return jsonify({"error": {"message": "wrong post id"}})
-    return jsonify({"post": {"id": post.id, "title": post.title, "content": post.content, "poster": post.poster.name}})
+    pst = {
+        "post": {
+                "id": post.id,
+                "title": post.title,
+                "content": post.content,
+                "poster": post.poster.name
+            }
+    }
+    return jsonify(pst), 200
+
 
 @POST.route('/list', methods=["GET"])
 def postsList():
@@ -36,6 +49,7 @@ def postsList():
         data['data'].append(pst)
     return data
 
+
 @POST.route('/update/<post_id>', methods=["PATCH"])
 def updatePostById(post_id):
     title = request.form.get('title')
@@ -44,11 +58,18 @@ def updatePostById(post_id):
     uppst = Post.updatePostById(post_id, info)
     if uppst is None:
         return jsonify({"error": {"message": "wrong post id"}})
-    return jsonify({"data": {"status": "success", "action": "update", "scope": "post"}}), 200
+    message = {
+        "data": {"status": "success", "action": "create", "scope": "post"}
+    }
+    return jsonify(message), 200
+
 
 @POST.route('/delete/<post_id>', methods=["DELETE"])
 def deletePostById(post_id):
     dpst = Post.deletePostById(post_id)
     if dpst is None:
         return jsonify({"error": {"message": "wrong post id"}})
-    return jsonify({"data": {"status": "success", "action": "delete", "scope": "post"}}), 200
+    message = {
+        "data": {"status": "success", "action": "create", "scope": "post"}
+    }
+    return jsonify(message), 200

@@ -1,20 +1,17 @@
-from flask import Blueprint, Flask, jsonify, Blueprint
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
 app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://barryyt_cai:postgres@localhost:5432/firtpostgres'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+dbconfig = 'postgresql://barryyt_cai:postgres@localhost:5432/firtpostgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = dbconfig
 
-db.init_app(app)
+db = SQLAlchemy(app)
 
-
-from app.user.controller import USER
-from app.role.controller import ROLE
-from app.post.controller import POST
-
+from .user.controller import USER
+from .role.controller import ROLE
+from .post.controller import POST
 
 app.register_blueprint(USER)
 app.register_blueprint(ROLE)
 app.register_blueprint(POST)
-
