@@ -6,7 +6,7 @@ USER = Blueprint('user', __name__, url_prefix='/api/v1/users')
 # api route default url
 
 
-@USER.route('/create', methods=['POST'])
+@USER.route('/', methods=['POST'])
 def createUser():
     name = request.form.get('name')
     email = request.form.get('email')
@@ -58,7 +58,7 @@ def getPostsByUser(user_id):
     return jsonify(data), 200
 
 
-@USER.route('/update/<user_id>', methods=["PATCH"])
+@USER.route('/<user_id>', methods=["PATCH"])
 def userUpdate(user_id):
     name = request.form.get('name')
     email = request.form.get('email')
@@ -77,7 +77,7 @@ def userUpdate(user_id):
     return jsonify(message), 200
 
 
-@USER.route('/delete/<user_id>', methods=["DELETE"])
+@USER.route('/<user_id>', methods=["DELETE"])
 def userDelete(user_id):
     duser = User.deleteUserById(user_id)
     if duser is None:
@@ -92,7 +92,7 @@ def userDelete(user_id):
     return jsonify(message), 200
 
 
-@USER.route('', methods=["GET"])
+@USER.route('/list', methods=["GET"])
 def allusers():
     users = User.getAllUsers()
     if users is None:

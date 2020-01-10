@@ -4,7 +4,7 @@ from app.post.models import Post
 POST = Blueprint('post', __name__, url_prefix='/api/v1/posts')
 
 
-@POST.route('/create', methods=['POST'])
+@POST.route('/', methods=['POST'])
 def create():
     title = request.form.get('title')
     content = request.form.get('content')
@@ -50,7 +50,7 @@ def postsList():
     return data
 
 
-@POST.route('/update/<post_id>', methods=["PATCH"])
+@POST.route('/<post_id>', methods=["PATCH"])
 def updatePostById(post_id):
     title = request.form.get('title')
     content = request.form.get('content')
@@ -64,7 +64,7 @@ def updatePostById(post_id):
     return jsonify(message), 200
 
 
-@POST.route('/delete/<post_id>', methods=["DELETE"])
+@POST.route('/<post_id>', methods=["DELETE"])
 def deletePostById(post_id):
     dpst = Post.deletePostById(post_id)
     if dpst is None:
