@@ -24,7 +24,7 @@ def createUser():
 
 
 @USER.route('/<user_id>', methods=["GET"])
-def user(user_id):
+def getUserById(user_id):
     user = User.getUserById(user_id)
     if user is None:
         return jsonify({"error": {"message": "wrong user id"}}), 404
@@ -71,7 +71,7 @@ def getPostsByUser(user_id):
 
 
 @USER.route('/<user_id>', methods=["PATCH"])
-def userUpdate(user_id):
+def updatePostById(user_id):
     name = request.form.get('name')
     email = request.form.get('email')
     role_id = request.form.get('role')
@@ -90,7 +90,7 @@ def userUpdate(user_id):
 
 
 @USER.route('/<user_id>', methods=["DELETE"])
-def userDelete(user_id):
+def deleteUserById(user_id):
     duser = User.deleteUserById(user_id)
     if duser is None:
         return jsonify({"error": {"message": "wrong user id"}}), 404
@@ -101,11 +101,11 @@ def userDelete(user_id):
             "scope": "user :" + user_id
         }
     }
-    return jsonify(message), 200
+    return jsonify(message), 204
 
 
-@USER.route('/list', methods=["GET"])
-def allusers():
+@USER.route('/', methods=["GET"])
+def getAllUsers():
     users = User.getAllUsers()
     if users is None:
         return jsonify({"error": {"message": "wrong user id"}}), 404

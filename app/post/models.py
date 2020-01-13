@@ -6,8 +6,8 @@ from app.model.datetime import DataTimeBase
 class Post(DataTimeBase, db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.Text)
-    content = db.Column(db.Text)
+    title = db.Column(db.Text, nullable=False)
+    content = db.Column(db.Text, nullable=False)
     poster_id = db.Column(db.Integer, db.ForeignKey(
         'user.id', ondelete="CASCADE"), nullable=False)
     poster = db.relationship(User, lazy='joined')
@@ -20,7 +20,7 @@ class Post(DataTimeBase, db.Model):
     def createPost(self):
         db.session.add(self)
         db.session.commit()
-        return self.id
+        return self.title
 
     @classmethod
     def getPostsByUser(cls, userid):
@@ -35,26 +35,6 @@ class Post(DataTimeBase, db.Model):
         if post is None:
             return None
         return post
-
-    @classmethod
-    def getPostsByArgs(cls, args):
-        created_at = args.get("created_at", None)
-        updated_at = args.get("updated_at", None)
-        title = args.get("title", None)
-        content = args.get("content", None)
-        print(args)
-
-        if created_at is not None:
-            filters = Post.created_at == created_at
-        if updated_at is not None:
-            filters = Post.updated_at == updated_at
-        if title is not None:
-            filters = Post.title == title
-        if content is not None:
-            filters = Post.content == content
-
-        psts = Post.query.filter(filters).all()
-        return psts
 
     @classmethod
     def getPostsByUserArg(cls, id, args):
