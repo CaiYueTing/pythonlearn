@@ -17,7 +17,7 @@ def createUser():
         "data": {
             "status": "success",
             "action": "create",
-            "scope": "user :" + str(id)
+            "user": str(id)
         }
     }
     return jsonify(message), 201

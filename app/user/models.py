@@ -54,7 +54,8 @@ class User(db.Model):
 
     @classmethod
     def getAllUsers(cls):
-        users = cls.query.join(Role).filter(User.role_id == Role.id).all()
+        users = cls.query.join(Role).filter(User.role_id == Role.id).\
+            order_by(cls.id.desc()).all()
         return users
 
     def __repr__(self):
